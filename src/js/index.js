@@ -2,6 +2,11 @@
     // dqs shortcut
     const $ = (selector) => document.querySelector(selector);
 
+    const updateMenuCnt = () => {
+        const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
+        $('.menu-count').innerText = `총 ${menuCount} 개`;
+    }
+
     const addMenuName = () => {
         if ($('#espresso-menu-name').value === '') {
             alert('값을 입력해주세요');
@@ -31,8 +36,7 @@
         $('#espresso-menu-list').insertAdjacentHTML('beforeend',
             menuItemTemplate(espressoMenuName)
         );
-        const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
-        $('.menu-count').innerText = `총 ${menuCount} 개`;
+        updateMenuCnt();
         $('#espresso-menu-name').value = '';
     }
 
@@ -56,11 +60,17 @@
         }
     });
 
+    // list update && delete
     $('#espresso-menu-list').addEventListener('click', (e) => {
         if (e.target.classList.contains('menu-edit-button')) {
-            const menuName = e.target.closest('li').querySelector('.menu-name').innerText;
-            e.target.closest('li').querySelector('.menu-name').innerText =
-                prompt('메뉴명을 수정하세요', menuName);
+            const $menuName = e.target.closest('li').querySelector('.menu-name')
+            $menuName.innerText = prompt('메뉴명을 수정하세요', $menuName.innerText);
+        }
+        if (e.target.classList.contains('menu-remove-button')) {
+            if (confirm('정말 삭제하겠습니까?')) {
+                e.target.closest('li').remove();
+                updateMenuCnt();
+            }
         }
     })
 

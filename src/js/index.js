@@ -68,6 +68,8 @@
     if (e.target.classList.contains('menu-remove-button')) {
       if (confirm('정말 삭제하겠습니까?')) {
         e.target.closest('li').remove();
+        menu.splice(menuId, 1);
+        store.setLocalStorage(menu);
         updateMenuCnt();
       }
     }

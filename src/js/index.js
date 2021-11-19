@@ -59,7 +59,8 @@
     $('#espresso-menu-list').addEventListener('click', (e) => {
         if (e.target.classList.contains('menu-edit-button')) {
             const menuName = e.target.closest('li').querySelector('.menu-name').innerText;
-            const updatedMenuName = prompt('메뉴명을 수정하세요', menuName)
+            e.target.closest('li').querySelector('.menu-name').innerText =
+                prompt('메뉴명을 수정하세요', menuName);
         }
     })
 

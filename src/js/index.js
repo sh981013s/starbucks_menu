@@ -2,14 +2,14 @@
   // dqs shortcut
   const $ = (selector) => document.querySelector(selector);
 
-  const menu = [];
+  let menu = [];
 
   const store = {
     setLocalStorage(menu) {
       localStorage.setItem('menu', JSON.stringify(menu));
     },
     getLocalStorage() {
-      localStorage.getItem('menu');
+      return JSON.parse(localStorage.getItem('menu'));
     },
   };
 
@@ -18,16 +18,7 @@
     $('.menu-count').innerText = `총 ${menuCount} 개`;
   };
 
-  const addMenuName = () => {
-    if ($('#espresso-menu-name').value === '') {
-      alert('값을 입력해주세요');
-      return;
-    }
-    const espressoMenuName = document.querySelector(
-      '#espresso-menu-name'
-    ).value;
-    menu.push({ name: espressoMenuName });
-    store.setLocalStorage(menu);
+  const render = () => {
     const template = menu
       .map((item, idx) => {
         return `<li data-menu-id="${idx}" class="menu-list-item d-flex items-center py-2">
@@ -50,6 +41,28 @@
       .join('');
     $('#espresso-menu-list').innerHTML = template;
     updateMenuCnt();
+  };
+
+  const init = () => {
+    if (store.getLocalStorage().length > 1) {
+      menu = store.getLocalStorage();
+    }
+    render();
+  };
+
+  init();
+
+  const addMenuName = () => {
+    if ($('#espresso-menu-name').value === '') {
+      alert('값을 입력해주세요');
+      return;
+    }
+    const espressoMenuName = document.querySelector(
+      '#espresso-menu-name'
+    ).value;
+    menu.push({ name: espressoMenuName });
+    store.setLocalStorage(menu);
+    render();
     $('#espresso-menu-name').value = '';
   };
 

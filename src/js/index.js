@@ -2,7 +2,15 @@
   // dqs shortcut
   const $ = (selector) => document.querySelector(selector);
 
-  let menu = [];
+  let menu = {
+    espresso: [],
+    frappuccino: [],
+    blended: [],
+    teavana: [],
+    desert: [],
+  };
+
+  let currentCategory = 'espresso';
 
   const store = {
     setLocalStorage(menu) {
@@ -19,7 +27,7 @@
   };
 
   const render = () => {
-    const template = menu
+    const template = menu[currentCategory]
       .map((item, idx) => {
         return `<li data-menu-id="${idx}" class="menu-list-item d-flex items-center py-2">
                       <span class="w-100 pl-2 menu-name">${item.name}</span>
@@ -44,7 +52,7 @@
   };
 
   const init = () => {
-    if (store.getLocalStorage().length > 1) {
+    if (store.getLocalStorage() && store.getLocalStorage().length > 0) {
       menu = store.getLocalStorage();
     }
     render();
@@ -60,7 +68,7 @@
     const espressoMenuName = document.querySelector(
       '#espresso-menu-name'
     ).value;
-    menu.push({ name: espressoMenuName });
+    menu[currentCategory].push({ name: espressoMenuName });
     store.setLocalStorage(menu);
     render();
     $('#espresso-menu-name').value = '';
@@ -74,14 +82,14 @@
         '메뉴명을 수정하세요',
         $menuName.innerText
       );
-      menu[menuId].name = updatedMenuName;
+      menu[currentCategory][menuId].name = updatedMenuName;
       store.setLocalStorage(menu);
       $menuName.innerText = updatedMenuName;
     }
     if (e.target.classList.contains('menu-remove-button')) {
       if (confirm('정말 삭제하겠습니까?')) {
         e.target.closest('li').remove();
-        menu.splice(menuId, 1);
+        menu[currentCategory].splice(menuId, 1);
         store.setLocalStorage(menu);
         updateMenuCnt();
       }
@@ -109,5 +117,15 @@
   // list update && delete
   $('#espresso-menu-list').addEventListener('click', (e) => {
     updateAndDeleteMenuName(e);
+  });
+
+  $('nav').addEventListener('click', (e) => {
+    const isCategoryBtn = e.target.classList.contains('cafe-category-name');
+    if (isCategoryBtn) {
+      const categoryName = e.target.dataset.categoryName;
+      currentCategory = categoryName;
+      $('#category-title').innerText = `${e.target.innerText} 지점 메뉴관리`;
+      render();
+    }
   });
 })();

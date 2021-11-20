@@ -18,7 +18,7 @@
 ![](123.gif)
 
 <p align="middle">
-  <a href="https://blackcoffee-study.github.io/moonbucks-menu/">🖥️ 데모 링크</a>
+  <a href="https://optimistic-blackwell-8e5882.netlify.app">🖥️ 데모 링크</a>
 </p>
 
 <br/>
